@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 require 'sqlite3'
+require 'termtter/active_rubytter'
 
 module Termtter::Storage
   class SQLite3
