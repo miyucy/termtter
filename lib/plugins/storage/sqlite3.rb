@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 require 'sqlite3'
-require 'lib/termtter/active_rubytter'
 
 module Termtter::Storage
   class SQLite3
@@ -24,9 +23,9 @@ CREATE TABLE IF NOT EXISTS user (
 );
 CREATE TABLE IF NOT EXISTS post (
     post_id          int NOT NULL,  -- twitter側のpostのid
-    created_at	     int,    	    -- 日付(RubyでUNIX時間に変換)
-    in_reply_to_status_id int, 	    -- あったほうがよいらしい
-    in_reply_to_user_id int,  	    -- あったほうがよいらしい
+    created_at       int,           -- 日付(RubyでUNIX時間に変換)
+    in_reply_to_status_id int,      -- あったほうがよいらしい
+    in_reply_to_user_id int,        -- あったほうがよいらしい
     post_text text,
     user_id int NOT NULL,
     PRIMARY KEY (post_id)
@@ -48,10 +47,9 @@ CREATE TABLE IF NOT EXISTS post (
 
     def update_user(user_id, screen_name)
       return nil if find_user_id(user_id)
-      @db.execute(
-        "insert into user values(?,?)",
-        status[:user_id],
-        status[:screen_name])
+      @db.execute("insert into user values(?,?)",
+                  user_id,
+                  screen_name)
     end
 
     FIND_USER_ID = <<-EOS
@@ -125,8 +123,8 @@ EOS
     end
 
     FIND_USER = <<-EOS
-select created_at, screen_name, post_text, in_reply_to_status_id, post_id, user_id 
-from post inner join user on post.user_id = user.id where 
+select created_at, screen_name, post_text, in_reply_to_status_id, post_id, user_id
+from post inner join user on post.user_id = user.id where
 EOS
     def find_user(user = "")
       result = []
