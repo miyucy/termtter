@@ -9,8 +9,13 @@ class OctopiBox
       tw_users(args).each do |tw_user|
         gh_users = User.find_all(tw_user)
         puts "seach by #{tw_user}, found #{gh_users.size} user(s)"
-        gh_users.each do |gh_user|
-          pp gh_user
+        gh_users.each do |gh|
+          puts "#{gh.name}(#{gh.fullname}) repos:#{gh.repos} lang:#{gh.language}"
+          repositories = Repository.find(:user => gh.name)
+          max_length = repositories.map{ |repos| repos.name.size }.max
+          repositories.each do |repos|
+            puts "  #{repos.name}#{' ' * (max_length - repos.name.size)} -- #{repos.description}"
+          end
         end
       end
     end
