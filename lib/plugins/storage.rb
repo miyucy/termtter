@@ -10,15 +10,17 @@ module Termtter::Client
     :points => [:pre_filter],
     :exec_proc => lambda {|statuses, event|
       statuses.each do |s|
-        @db.update(
-          :post_id => s.id,
-          :created_at => Time.parse(s.created_at).to_i,
-          :in_reply_to_status_id => s.in_reply_to_status_id,
-          :in_reply_to_user_id => s.in_reply_to_user_id,
-          :text => s.text,
-          :user_id => s.user.id,
-          :screen_name => s.user.screen_name
-        )
+        @db.update({
+                     :post_id               => s.id,
+                     :created_at            => Time.parse(s.created_at).to_i,
+                     :in_reply_to_status_id => s.in_reply_to_status_id,
+                     :in_reply_to_user_id   => s.in_reply_to_user_id,
+                     :text                  => s.text,
+                     :user_id               => s.user.id,
+                     :screen_name           => s.user.screen_name,
+                     :protected             => s.user.protected,
+                     :source                => s.source,
+                   })
       end
     }
   )
