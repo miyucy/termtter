@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS post (
       return nil if find_user_id(user_id)
       @db.execute(
         "insert into user values(?,?)",
-        status[:user_id],
-        status[:screen_name])
+        user_id,
+        screen_name)
     end
 
     FIND_USER_ID = <<-EOS
