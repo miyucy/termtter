@@ -19,6 +19,15 @@ require 'rubytter'
 require 'notify'
 require 'timeout'
 
+def git_info
+  parent = File.join(File.dirname($0), '..')
+  return '' unless FileTest.directory? File.join(parent, '.git')
+  refs = YAML.load_file(File.join(parent, '.git', 'HEAD'))['ref']
+  branch = refs[%r'refs/(.*)\Z',1]
+  revision = File.read(File.join(parent, '.git', refs)).strip
+  "(#{branch}:#{revision})"
+end
+
 module Termtter
   VERSION = File.read(File.join(File.dirname(__FILE__), '../VERSION')).strip
   APP_NAME = 'termtter'
