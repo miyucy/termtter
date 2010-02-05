@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 require 'time'
-require File.dirname(__FILE__) + '/storage/db'
+require File.dirname(__FILE__) + '/storage/sqlite3'
 
 module Termtter::Client
-  @db = Termtter::Storage::DB.new
+  @db = Termtter::Storage::SQLite3.new
   register_hook(
     :name => :storage,
     :points => [:pre_filter],
