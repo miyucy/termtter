@@ -141,9 +141,11 @@ EOS
             :text => post_text,
             :in_reply_to_status_id => in_reply_to_status_id,
             :in_reply_to_user_id => nil,
+            :source => nil,
             :user => {
               :id => user_id,
-              :screen_name => screen_name
+              :screen_name => screen_name,
+              :protected => nil,
             }
           })
       end

@@ -30,6 +30,15 @@ describe Termtter::Client, " when the storage plugin is loaded" do
     Termtter::Client.command_exists?("ssu").should be_true
   end
 
+  it "should match output of search_storage_user" do
+    word = 'yukihiro_matz'
+    Term::ANSIColor.uncolored{
+      be_quiet{
+        Termtter::Client.find_command("search_storage_user").call(nil, word)
+      }[:stdout]
+    }.should match /#{word}/
+  end
+
   it "should register storage hook" do
     Termtter::Client.get_hook(:storage).should_not be_nil
   end
