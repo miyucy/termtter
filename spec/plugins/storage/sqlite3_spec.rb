@@ -23,17 +23,17 @@ module Termtter::Storage
 
     it 'find_id returns status' do
       @db.update(@status)
-      @db.find_id(@status[:post_id])[:id].should == @status[:post_id]
+      @db.find_id(@status[:post_id]).id.should == @status[:post_id]
     end
 
     it 'find_text returns status' do
       @db.update(@status)
-      @db.find_text('om').map{ |e| e[:text].should match(/om/) }
+      @db.find_text('om').map{ |s| s.text.should match(/om/) }
     end
 
     it 'find_user returns status' do
       @db.update(@status)
-      @db.find_user('rmt').map{ |e| e[:user][:screen_name].should match(/rmt/) }
+      @db.find_user('rmt').map{ |s| s.user.screen_name.should match(/rmt/) }
     end
 
     it 'size of statuses' do
