@@ -6,7 +6,7 @@ require 'termtter/active_rubytter'
 module Termtter::Storage
   class SQLite3
 
-    def initialize(file = Termtter::CONF_DIR + '/storage.db')
+    def initialize(file = config.plugins.storage.path)
       @db = ::SQLite3::Database.new(file)
       @db.type_translation = true
       create_table

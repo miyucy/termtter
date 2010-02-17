@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-
 require 'time'
 require File.dirname(__FILE__) + '/storage/sqlite3'
 
+config.plugins.storage.set_default(:path, Termtter::CONF_DIR + '/storage.db')
+
 module Termtter::Client
-  @db = Termtter::Storage::SQLite3.new
+  @db = Termtter::Storage::SQLite3.new(config.plugins.storage.path)
   register_hook(
     :name => :storage,
     :points => [:pre_filter],
