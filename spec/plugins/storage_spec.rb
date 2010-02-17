@@ -20,9 +20,7 @@ describe Termtter::Client, " when the storage plugin is loaded" do
       be_quiet{
         Termtter::Client.find_command("search_storage").call(nil, word)
       }[:stdout]
-    }.each_line do |line|
-      line.should match /#{word}/
-    end
+    }.should match /#{word}/
   end
 
   it "should define search_storage_user method" do
