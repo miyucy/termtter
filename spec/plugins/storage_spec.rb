@@ -7,6 +7,7 @@ describe Termtter::Client, " when the storage plugin is loaded" do
   before do
     setup_null_output
     Termtter::Client.plug "storage"
+    setup_storage
   end
 
   it "should define search_storage method" do
@@ -15,7 +16,7 @@ describe Termtter::Client, " when the storage plugin is loaded" do
   end
 
   it "should match output of search_storage" do
-    word = '#termtter'
+    word = @status_1[:text].split.first
     Term::ANSIColor.uncolored{
       be_quiet{
         Termtter::Client.find_command("search_storage").call(nil, word)
@@ -29,7 +30,7 @@ describe Termtter::Client, " when the storage plugin is loaded" do
   end
 
   it "should match output of search_storage_user" do
-    word = 'yukihiro_matz'
+    word = @user_1[:screen_name]
     Term::ANSIColor.uncolored{
       be_quiet{
         Termtter::Client.find_command("search_storage_user").call(nil, word)
@@ -52,5 +53,32 @@ describe Termtter::Client, " when the storage plugin is loaded" do
       end
     }
     Termtter::Client.register_hook(Termtter::NullOut.new)
+  end
+
+  def setup_storage
+    config.plugins.storage.path = ":memory:"
+
+    @user_1 = { :id => 1, :screen_name => 'home' }
+    @user_2 = { :id => 2, :screen_name => 'logout' }
+    @status_1 = {
+      :id => 1,
+      :created_at => Time.now.to_s,
+      :text => 'need more test #termtter',
+      :in_reply_to_status_id => nil,
+      :in_reply_to_user_id => nil,
+      :user => @user_1
+    }
+    @status_2 = {
+      :id => 1,
+      :created_at => Time.now.to_s,
+      :text => 'no more test #termtter',
+      :in_reply_to_status_id => nil,
+      :in_reply_to_user_id => nil,
+      :user => @user_2
+    }
+
+    Termtter::Client.get_hook(:storage).call([Termtter::ActiveRubytter.new(@status_1),
+                                              Termtter::ActiveRubytter.new(@status_2)],
+                                             :dummy_event)
   end
 end
